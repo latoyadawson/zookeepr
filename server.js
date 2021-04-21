@@ -12,6 +12,8 @@ const app = express();
 app.use(express.urlencoded({eextended: true}));
 //parse incoming JSON data
 app.use(express.json());
+//to use css/script files, make files in public folder static resoruces 
+app.use(express.static('public'));
 
 function filterByQuery(query, animalsArray) {
     let personalityTraitsArray = [];
@@ -129,4 +131,19 @@ app.post('/api/animals', (req, res) => {
 //listen for requests 
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
+});
+
+//path to html files
+app.get('/', (req,res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+app.get('/zookeepers', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+});
+//wildcard rourte to catch routes that don't exisit 
+app.get('*', (req,res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
 });
